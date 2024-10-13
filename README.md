@@ -1,5 +1,6 @@
 # OHospitalFundamental
 PARTE 2
+
 *No hospital, as internações têm sido registradas por meio de formulários eletrônicos que gravam os dados em arquivos. 
 Para cada internação, são anotadas a data de entrada, a data prevista de alta e a data efetiva de alta, além da descrição textual dos procedimentos a serem realizados. 
 As internações precisam ser vinculadas a quartos, com a numeração e o tipo. 
@@ -114,6 +115,7 @@ db["internações"].insertMany([
     }}]);
 ```
 PARTE 3
+
 *Inclua ao menos dez médicos de diferentes especialidades.
 
 R:
