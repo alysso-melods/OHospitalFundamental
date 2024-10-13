@@ -1,4 +1,4 @@
-# OHospitalFundamental
+# O Hospital Fundamental
 Um hospital local precisa desenvolver um sistema para gerenciar seus dados clínicos e substituir planilhas e arquivos antigos por um banco de dados funcional. O objetivo é criar uma estrutura que registre médicos, pacientes, consultas, convênios, receitas médicas e muito mais...  
 
 PARTE 2
