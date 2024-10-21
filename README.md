@@ -685,5 +685,21 @@ R:
 
 R:
 
-![Diagrama ER de banco de dados (pé de galinha)](https://github.com/user-attachments/assets/fb5cedbd-0845-47bb-80f1-186aa9b21600)
+![image](https://github.com/user-attachments/assets/95e26387-e859-42c8-b10c-437caef1ad5d)
+
+
+- Criar Entidade de Relacionamento entre internação e enfermeiro.
+
+R:
+
+![image](https://github.com/user-attachments/assets/d33713d9-f7b1-4c37-9288-b52afeec2d1a)
+
+
+- Arrumar a chave estrangeira do relacionamento entre convênio e médico.
+
+R:
+
+
+
+
 
