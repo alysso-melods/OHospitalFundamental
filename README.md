@@ -685,6 +685,5 @@ R:
 
 R:
 
-```js
-![Diagrama ER de banco de dados (pé de galinha)](https://github.com/user-attachments/assets/7aee4fbc-5fdc-488d-a660-979c1a40ee22)
-```
+![Diagrama ER de banco de dados (pé de galinha)](https://github.com/user-attachments/assets/fb5cedbd-0845-47bb-80f1-186aa9b21600)
+
