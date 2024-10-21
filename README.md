@@ -697,9 +697,35 @@ R:
 
 - Arrumar a chave estrangeira do relacionamento entre convênio e médico.
 
-R:
 
 
 
+- Considerando que “a princípio o hospital trabalha com apartamentos, quartos duplos e enfermaria”, inclua ao menos esses três tipos com valores diferentes.
 
+R: 
+```js
+db.quartos.insertMany([
+  {
+    numero: "102",
+    tipo: "Quarto Duplo",
+    valor: 200
+  },
+  {
+    numero: "101",
+    tipo: "Apartamento",
+    valor: 300
+  },
+  {
+    numero: "103",
+    tipo: "Enfermaria",
+    valor: 150
+  }
+]);
+```
 
+- Inclua dados de dez profissionais de enfermaria. Associe cada internação a ao menos dois enfermeiros.
+
+R: 
+
+```js
+```
