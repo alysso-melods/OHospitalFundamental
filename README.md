@@ -804,4 +804,257 @@ db.quartos.insertMany([
 R: 
 
 ```js
+db.enfermeiros.insertMany([
+
+  {
+    _id: ObjectId(),
+    nome: "Enfermeiro Daniele De Rossi",
+    CPF: "98765432100",
+    registro_CRE: "CRE67890",
+    data_nascimento: ISODate("1983-07-15T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeiro Andrea Barzagli",
+    CPF: "03764321000",
+    registro_CRE: "CRE03764",
+    data_nascimento: ISODate("1981-05-25T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeiro Mehdi Benatia",
+    CPF: "12345678900",
+    registro_CRE: "CRE12345",
+    data_nascimento: ISODate("1992-06-08T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeira Victoria Albuquerque",
+    CPF: "16672678909",
+    registro_CRE: "CRE16672",
+    data_nascimento: ISODate("1990-03-20T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeira Antonio Rudiger",
+    CPF: "22345678901",
+    registro_CRE: "CRE22345",
+    data_nascimento: ISODate("1993-02-03T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeira Gabriela Zanotti",
+    CPF: "11223344556",
+    registro_CRE: "CRE11223",
+    data_nascimento: ISODate("1991-09-11T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeiro John Terry",
+    CPF: "55667788990",
+    registro_CRE: "CRE55667",
+    data_nascimento: ISODate("1980-12-07T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeira Andressa Alves",
+    CPF: "99887766554",
+    registro_CRE: "CRE99887",
+    data_nascimento: ISODate("1995-01-14T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeiro Thomas Müller",
+    CPF: "44556677889",
+    registro_CRE: "CRE44556",
+    data_nascimento: ISODate("1988-03-30T00:00:00.000Z")
+  },
+  {
+    _id: ObjectId(),
+    nome: "Enfermeira Rayssa Leal",
+    CPF: "33445566778",
+    registro_CRE: "CRE33445",
+    data_nascimento: ISODate("1994-08-18T00:00:00.000Z")
+  }
+]);
+```
+```js
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a5259") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1370"), ObjectId("66e98acfa294ca7f32df1375")]
+    }
+  }
+);
+
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a525a") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1376"), ObjectId("66e98acfa294ca7f32df1371") ]
+    }
+  }
+);
+
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a525b") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ ObjectId("66e98acfa294ca7f32df1373"),ObjectId("66e98acfa294ca7f32df136e") ]
+    }
+  }
+);
+
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a525c") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df136f"), ObjectId("66e98acfa294ca7f32df1372")]
+    }
+  }
+);
+
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a525d") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1379"), ObjectId("66e98acfa294ca7f32df1378")]
+    }
+  }
+);
+
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a525e") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1374"), ObjectId("66e98acfa294ca7f32df1373")]
+    }
+  }
+);
+
+db.internacoes.updateMany(
+  { _id: ObjectId("671714589b88976e823a525f") }, 
+  {
+    $set: {
+      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1375"), ObjectId("66e98acfa294ca7f32df136e")]
+    }
+  }
+);
+```
+# PARTE 4
+- Crie um script que adicione uma coluna “em_atividade” para os médicos, indicando se ele ainda está atuando no hospital ou não. Crie um script para atualizar ao menos dois médicos como inativos e os demais em atividade.
+
+R:
+```js
+db.medicos.updateMany(
+  {},
+  {$set:{em_atividade: true}}
+);
+
+db.medicos.updateOne(
+  { _id: ObjectId("670d58299fee93319230d9f8") }, 
+  {$set: {em_atividade: false}}
+);
+
+db.medicos.updateOne(
+  { _id: ObjectId("670d58299fee93319230d9f9") }, 
+  {$set: {em_atividade: false}}
+);
+```
+
+# PARTE 5
+Criar um script de consultas nesse banco de dados
+
+1- Todos os dados e o valor médio das consultas do ano de 2020 e das que foram feitas sob convênio.
+R:
+```js
+db.consultas.aggregate([
+  {
+    $match:
+    {
+      data:
+      {
+        $gte: ISODate("2020-01-01T00:00:00.000Z"),
+        $lt: ISODate("2021-01-01T00:00:00.000Z")
+      }
+    }
+  },
+  {
+    $group:
+     {  
+      _id: null,
+      totalConsultas: { $sum: 1 },
+      mediaValor: { $avg: "$valor" },
+      dadosConsultas: { $push: "$$ROOT" }
+     }
+  } //esse é o script para saber o valor das consultas de 2020
+]);
+```
+```js
+db.consultas.aggregate([
+  {
+    $match:
+    {
+      conveniado: true
+    }
+  },
+  {
+    $group:
+    {
+      _id: null,
+      totalConsultas: { $sum: 1 },
+      mediaValor: { $avg: "$valor" },
+      dadosConsultas: { $push: "$$ROOT" }
+    } //esse é o script para saber as consultas feitas através de um convênio
+  }]);
+```
+2- Todos os dados das internações que tiveram data de alta maior que a data prevista para a alta.
+R:
+```js
+db.internacoes.aggregate([
+  {
+    $match:
+    {
+      dataEfetivaAlta: { $exists: true }, dataPrevistaAlta: { $exists: true }
+    }
+  },
+  {
+    $match:
+    {
+      $expr:
+      {
+        $gt: ["$dataEfetivaAlta", "$dataPrevistaAlta"]
+      }
+    }
+  }
+]);
+```
+3- Receituário completo da primeira consulta registrada com receituário associado.
+R:
+```js
+db.consultas.aggregate([
+  { $sort: { data: 1 }},
+  { $limit: 1 },
+  {$lookup:
+     {
+      from: "receituario",
+      localField: "receituario._id",
+      foreignField: "_id",
+      as: "receituarioDetalhes"
+     }
+  },
+  {$project:
+     {
+      _id: 1,
+      paciente: 1,
+      data: 1,
+      receituarioDetalhes: {$arrayElemAt: ["$receituarioDetalhes", 0]}
+     }
+  }
+]);
+```
+4-Todos os dados da consulta de maior valor e também da de menor valor (ambas as consultas não foram realizadas sob convênio).
+R:
+```js
 ```
