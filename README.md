@@ -966,7 +966,8 @@ db.medicos.updateOne(
 # PARTE 5
 Criar um script de consultas nesse banco de dados
 
-1- Todos os dados e o valor médio das consultas do ano de 2020 e das que foram feitas sob convênio.
+1- Todos os dados e o valor médio das consultas do ano de 2020 e das que foram feitas sob convênio
+
 R:
 ```js
 db.consultas.aggregate([
@@ -1009,7 +1010,8 @@ db.consultas.aggregate([
     } //esse é o script para saber as consultas feitas através de um convênio
   }]);
 ```
-2- Todos os dados das internações que tiveram data de alta maior que a data prevista para a alta.
+2- Todos os dados das internações que tiveram data de alta maior que a data prevista para a alta
+
 R:
 ```js
 db.internacoes.aggregate([
@@ -1030,7 +1032,8 @@ db.internacoes.aggregate([
   }
 ]);
 ```
-3- Receituário completo da primeira consulta registrada com receituário associado.
+3- Receituário completo da primeira consulta registrada com receituário associado
+
 R:
 ```js
 db.consultas.aggregate([
@@ -1054,7 +1057,8 @@ db.consultas.aggregate([
   }
 ]);
 ```
-4-Todos os dados da consulta de maior valor e também da de menor valor (ambas as consultas não foram realizadas sob convênio).
+4-Todos os dados da consulta de maior valor e também da de menor valor (ambas as consultas não foram realizadas sob convênio)
+
 R:
 ```js
 ```
