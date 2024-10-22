@@ -699,6 +699,82 @@ R:
 
 
 
+- Registre ao menos sete internações. Pelo menos dois pacientes devem ter se internado mais de uma vez. Ao menos três quartos devem ser cadastrados. As internações devem ter ocorrido entre 01/01/2015 e 01/01/2022.
+
+```js
+db.internacoes.insertMany([
+  {
+    paciente: "João Santos",
+    dataEntrada: ISODate("2016-03-10T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2016-03-17T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2016-03-16T00:00:00.000Z"),
+    quarto: { _id: "1a", numero: 101 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dra. Ana Souza",
+    procedimentos: ["Cirurgia de apendicite"]
+  },
+  {
+    paciente: "João Santos",
+    dataEntrada: ISODate("2018-01-15T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2018-01-22T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2018-01-23T00:00:00.000Z"),
+    quarto: { _id: "1b", numero: 202 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dr. João Silva",
+    procedimentos: ["Exame de sangue", "Raio-X"]
+  },
+  {
+    paciente: "Maria Oliveira",
+    dataEntrada: ISODate("2017-06-01T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2017-06-08T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2017-06-08T00:00:00.000Z"),
+    quarto: { _id: "1a", numero: 101 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dr. Roberto Dias",
+    procedimentos: ["Cirurgia ortopédica"]
+  },
+  {
+    paciente: "Maria Oliveira",
+    dataEntrada: ISODate("2020-09-20T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2020-09-27T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2020-09-28T00:00:00.000Z"),
+    quarto: { _id: "1b", numero: 202 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dr. Roberto Dias",
+    procedimentos: ["Exame de sangue", "Raio-X"]
+  },
+  {
+    paciente: "Diego Palacios",
+    dataEntrada: ISODate("2019-12-02T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2019-12-09T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2019-12-08T00:00:00.000Z"),
+    quarto: { _id: "1c", numero: 303 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dr. João Silva",
+    procedimentos: ["Cirurgia de hérnia"]
+  },
+  {
+    paciente: "Diego Maradona",
+    dataEntrada: ISODate("2021-05-15T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2021-05-22T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2021-05-21T00:00:00.000Z"),
+    quarto: { _id: "1a", numero: 101 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dra. Ana Souza",
+    procedimentos: ["Tratamento de infecção"]
+  },
+  {
+    paciente: "Diego Maradona",
+    dataEntrada: ISODate("2017-07-10T00:00:00.000Z"),
+    dataPrevistaAlta: ISODate("2017-07-17T00:00:00.000Z"),
+    dataEfetivaAlta: ISODate("2017-07-18T00:00:00.000Z"),
+    quarto: { _id: "1B", numero: 202 },
+    enfermeirosResponsaveis: "Enfermeira Maria Silva",
+    medicoResponsavel: "Dr. Roberto Dias",
+    procedimentos: ["Tratamento respiratório"]
+  }
+])
+```
 
 - Considerando que “a princípio o hospital trabalha com apartamentos, quartos duplos e enfermaria”, inclua ao menos esses três tipos com valores diferentes.
 
