@@ -881,64 +881,50 @@ db.enfermeiros.insertMany([
 ```js
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a5259") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1370"), ObjectId("66e98acfa294ca7f32df1375")]
-    }
+  {$set:
+      {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1370"), ObjectId("66e98acfa294ca7f32df1375")]}
   }
 );
 
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a525a") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1376"), ObjectId("66e98acfa294ca7f32df1371") ]
-    }
+  {$set:
+     {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1376"), ObjectId("66e98acfa294ca7f32df1371") ]}
   }
 );
 
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a525b") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ ObjectId("66e98acfa294ca7f32df1373"),ObjectId("66e98acfa294ca7f32df136e") ]
-    }
+  {$set:
+     {enfermeirosResponsaveis: [ ObjectId("66e98acfa294ca7f32df1373"),ObjectId("66e98acfa294ca7f32df136e") ]}
   }
 );
 
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a525c") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df136f"), ObjectId("66e98acfa294ca7f32df1372")]
-    }
+  {$set:
+    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df136f"), ObjectId("66e98acfa294ca7f32df1372")]}
   }
 );
 
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a525d") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1379"), ObjectId("66e98acfa294ca7f32df1378")]
-    }
+  {$set:
+    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1379"), ObjectId("66e98acfa294ca7f32df1378")]}
   }
 );
 
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a525e") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1374"), ObjectId("66e98acfa294ca7f32df1373")]
-    }
+  {$set:
+    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1374"), ObjectId("66e98acfa294ca7f32df1373")]}
   }
 );
 
 db.internacoes.updateMany(
   { _id: ObjectId("671714589b88976e823a525f") }, 
-  {
-    $set: {
-      enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1375"), ObjectId("66e98acfa294ca7f32df136e")]
-    }
+  {$set:
+    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1375"), ObjectId("66e98acfa294ca7f32df136e")]}
   }
 );
 ```
@@ -947,8 +933,7 @@ db.internacoes.updateMany(
 
 R:
 ```js
-db.medicos.updateMany(
-  {},
+db.medicos.updateMany({},
   {$set:{em_atividade: true}}
 );
 
@@ -971,16 +956,14 @@ Criar um script de consultas nesse banco de dados
 R:
 ```js
 db.consultas.aggregate([
-  {
-    $match:
+  {$match:
     {
       data:
       {$gte: ISODate("2020-01-01T00:00:00.000Z"),
        $lt: ISODate("2021-01-01T00:00:00.000Z")}
     }
   },
-  {
-    $group:
+  {$group:
      {  
       _id: null,
       totalConsultas: { $sum: 1 },
@@ -992,17 +975,15 @@ db.consultas.aggregate([
 ```
 ```js
 db.consultas.aggregate([
-  {
-    $match:
+  {$match:
     {conveniado: true}
   },
-  {
-    $group:
+  {$group:
     {
       _id: null,
       totalConsultas: { $sum: 1 },
       mediaValor: { $avg: "$valor" },
-      dadosConsultas: { $push: "$$ROOT" }
+      dadosConsultas: { $push: "$$ROOT"}
     } //esse é o script para saber as consultas feitas através de um convênio
   }]);
 ```
@@ -1011,12 +992,10 @@ db.consultas.aggregate([
 R:
 ```js
 db.internacoes.aggregate([
-  {
-    $match:
+  {$match:
     {dataEfetivaAlta: { $exists: true }, dataPrevistaAlta: { $exists: true }}
   },
-  {
-    $match:
+  {$match:
     {$expr:
       {$gt: ["$dataEfetivaAlta", "$dataPrevistaAlta"]}
     }
@@ -1067,9 +1046,55 @@ db.consultas.aggregate([
 
 R:
 ```js
-
+db.internacoes.aggregate([
+  {$addFields:
+      {
+      diasInternacao:
+      {
+        $subtract: [
+          { $toDate: "$data_efetiva_alta" },
+          { $toDate: "$data_entrada" }
+        ]
+      },
+      totalInternacao:
+      {
+        $multiply: [
+          { $dateDiff: { startDate: "$data_entrada", endDate: "$data_efetiva_alta", unit: "day" } },
+          "$valor_diario"
+        ]
+    }}},
+  {$project:
+    {
+      _id: 1, paciente_id: 1, medico_id: 1,
+      data_entrada: 1, data_prevista_alta: 1, data_efetiva_alta: 1,
+      procedimentos: 1, quarto_numero: 1, valor_diario: 1,
+      enfermeiro_id: 1, diasInternacao: 1, totalInternacao: 1
+    }
+  }
+]);
 ```
 6- Data, procedimento e número de quarto de internações em quartos do tipo “apartamento”.
+
+R:
+```js
+db.internacoes.aggregate([
+    {$match: {"quarto_numero": 101}
+    },
+    {$project:
+        {
+            "_id": 0,
+            "data_entrada": 1, "procedimentos": 1, "quarto_numero": 1
+        }
+    }
+  ])
+```
+7- Nome do paciente, data da consulta e especialidade de todas as consultas em que os pacientes eram menores de 18 anos na data da consulta e cuja especialidade não seja “pediatria”, ordenando por data de realização da consulta.
+
+R:
+```js
+
+```
+8- Nome do paciente, nome do médico, data da internação e procedimentos das internações realizadas por médicos da especialidade “gastroenterologia”, que tenham acontecido em “enfermaria”.
 
 R:
 ```js
