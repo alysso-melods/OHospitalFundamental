@@ -975,10 +975,8 @@ db.consultas.aggregate([
     $match:
     {
       data:
-      {
-        $gte: ISODate("2020-01-01T00:00:00.000Z"),
-        $lt: ISODate("2021-01-01T00:00:00.000Z")
-      }
+      {$gte: ISODate("2020-01-01T00:00:00.000Z"),
+       $lt: ISODate("2021-01-01T00:00:00.000Z")}
     }
   },
   {
@@ -996,9 +994,7 @@ db.consultas.aggregate([
 db.consultas.aggregate([
   {
     $match:
-    {
-      conveniado: true
-    }
+    {conveniado: true}
   },
   {
     $group:
@@ -1017,17 +1013,12 @@ R:
 db.internacoes.aggregate([
   {
     $match:
-    {
-      dataEfetivaAlta: { $exists: true }, dataPrevistaAlta: { $exists: true }
-    }
+    {dataEfetivaAlta: { $exists: true }, dataPrevistaAlta: { $exists: true }}
   },
   {
     $match:
-    {
-      $expr:
-      {
-        $gt: ["$dataEfetivaAlta", "$dataPrevistaAlta"]
-      }
+    {$expr:
+      {$gt: ["$dataEfetivaAlta", "$dataPrevistaAlta"]}
     }
   }
 ]);
@@ -1049,15 +1040,36 @@ db.consultas.aggregate([
   },
   {$project:
      {
-      _id: 1,
-      paciente: 1,
-      data: 1,
+      _id: 1, paciente: 1, data: 1,
       receituarioDetalhes: {$arrayElemAt: ["$receituarioDetalhes", 0]}
      }
   }
 ]);
 ```
 4-Todos os dados da consulta de maior valor e também da de menor valor (ambas as consultas não foram realizadas sob convênio)
+
+R:
+```js
+db.consultas.aggregate([
+  { $match: { convenio: { $exists: false } } },
+  { $group: { _id: null, maiorValor: { $max: "$valor" }, menorValor: { $min: "$valor" } } },
+  { $lookup: { from: "consultas", localField: "maiorValor", foreignField: "valor", as: "consultaMaior" } },
+  { $lookup: { from: "consultas", localField: "menorValor", foreignField: "valor", as: "consultaMenor" } },
+  { $project:
+   {
+     consultaMenor: { $arrayElemAt: ["$consultaMaior", 0] },
+     consultaMMaior: { $arrayElemAt: ["$consultaMenor", 0] }
+   } 
+  }
+]);
+```
+5- Todos os dados das internações em seus respectivos quartos, calculando o total da internação a partir do valor de diária do quarto e o número de dias entre a entrada e a alta.
+
+R:
+```js
+
+```
+6- Data, procedimento e número de quarto de internações em quartos do tipo “apartamento”.
 
 R:
 ```js
