@@ -1099,3 +1099,21 @@ R:
 R:
 ```js
 ```
+
+9- Os nomes dos médicos, seus CRMs e a quantidade de consultas que cada um realizou.
+
+R:
+```js
+```
+
+10-Todos os médicos que tenham "Gabriel" no nome. 
+
+R:
+```js
+```
+
+11-Os nomes, CORENs e número de internações de enfermeiros que participaram de mais de uma internação.
+
+R:
+```js
+```
