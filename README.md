@@ -1070,38 +1070,12 @@ db.internacoes.aggregate([
 
 R:
 ```js
-db.internacao.aggregate([
-  {
-    $group: {
-      _id: null,
-      todosDados: {
-        $push: "$$ROOT"
-      }
-    }
-  },
-
-  {
-    $unionWith:{
-      coll: "quartos",
-      pipeline:[
-        {
-          $group: {
-            _id: null,
-            dadosQuartos: {
-              $push: "$$ROOT"
-            }
-          }
-        }
-      ]
-    }
-  }
-])
 ```
+
 8- Nome do paciente, nome do médico, data da internação e procedimentos das internações realizadas por médicos da especialidade “gastroenterologia”, que tenham acontecido em “enfermaria”.
 
 R:
 ```js
-
 ```
 
 9- Os nomes dos médicos, seus CRMs e a quantidade de consultas que cada um realizou.
