@@ -681,24 +681,6 @@ R:
 ]
 ```
 
-- Criar entidade de relacionamento entre médico e especialidade.
-
-R:
-
-![image](https://github.com/user-attachments/assets/95e26387-e859-42c8-b10c-437caef1ad5d)
-
-
-- Criar Entidade de Relacionamento entre internação e enfermeiro.
-
-R:
-
-![image](https://github.com/user-attachments/assets/d33713d9-f7b1-4c37-9288-b52afeec2d1a)
-
-
-- Arrumar a chave estrangeira do relacionamento entre convênio e médico.
-
-
-
 - Registre ao menos sete internações. Pelo menos dois pacientes devem ter se internado mais de uma vez. Ao menos três quartos devem ser cadastrados. As internações devem ter ocorrido entre 01/01/2015 e 01/01/2022.
 
 ```js
@@ -1076,12 +1058,10 @@ db.internacoes.aggregate([
 R:
 ```js
 db.internacoes.aggregate([
-    {$match: {"quarto_numero": 101}
-    },
+    {$match: {"quarto_numero": 101}},
     {$project:
-        {
-            "_id": 0,
-            "data_entrada": 1, "procedimentos": 1, "quarto_numero": 1
+        {"_id": 0, "data_entrada": 1,
+         "procedimentos": 1, "quarto_numero": 1
         }
     }
   ])
@@ -1090,54 +1070,38 @@ db.internacoes.aggregate([
 
 R:
 ```js
+db.internacao.aggregate([
+  {
+    $group: {
+      _id: null,
+      todosDados: {
+        $push: "$$ROOT"
+      }
+    }
+  },
 
+  {
+    $unionWith:{
+      coll: "quartos",
+      pipeline:[
+        {
+          $group: {
+            _id: null,
+            dadosQuartos: {
+              $push: "$$ROOT"
+            }
+          }
+        }
+      ]
+    }
+  }
+])
 ```
 8- Nome do paciente, nome do médico, data da internação e procedimentos das internações realizadas por médicos da especialidade “gastroenterologia”, que tenham acontecido em “enfermaria”.
 
 R:
 ```js
-db.internacoes.aggregate([
-    {
-        $lookup: {
-            "from": "pacientes", 
-            "localField": "paciente_id", 
-            "foreignField": "_id", 
-            "as": "paciente_info" 
-        }
-    },
-    {
-        $unwind: "$paciente_info" 
-    },
-    {
-        $lookup: {
-            "from": "medicos", 
-            "localField": "medico_id", 
-            "foreignField": "_id", 
-            "as": "medico_info" 
-        }
-    },
-    {
-        $unwind: "$medico_info" 
-    }, 
-    {
-        $match: {
-            "medico_info.especialidades": "gastroenterologia",
-            $or: [
-                { "quarto_numero": 103 },
-                { "quarto_numero": 104 }
-            ]
-        }
-    },
-    {
-        $project: {
-            "_id": 0,
-            "nome_paciente": "$paciente_info.nome",
-            "nome_medico": "$medico_info.nome",
-            "data_internacao": "$data_entrada",
-            "procedimentos": "$procedimentos"
-        }
-    }
-])
+
 ```
 
 9- Os nomes dos médicos, seus CRMs e a quantidade de consultas que cada um realizou.
