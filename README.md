@@ -1050,15 +1050,13 @@ db.internacoes.aggregate([
   {$addFields:
       {
       diasInternacao:
-      {
-        $subtract: [
+      {$subtract: [
           { $toDate: "$data_efetiva_alta" },
           { $toDate: "$data_entrada" }
         ]
       },
       totalInternacao:
-      {
-        $multiply: [
+      {$multiply: [
           { $dateDiff: { startDate: "$data_entrada", endDate: "$data_efetiva_alta", unit: "day" } },
           "$valor_diario"
         ]
@@ -1098,22 +1096,94 @@ R:
 
 R:
 ```js
+db.internacoes.aggregate([
+    {
+        $lookup: {
+            "from": "pacientes", 
+            "localField": "paciente_id", 
+            "foreignField": "_id", 
+            "as": "paciente_info" 
+        }
+    },
+    {
+        $unwind: "$paciente_info" 
+    },
+    {
+        $lookup: {
+            "from": "medicos", 
+            "localField": "medico_id", 
+            "foreignField": "_id", 
+            "as": "medico_info" 
+        }
+    },
+    {
+        $unwind: "$medico_info" 
+    }, 
+    {
+        $match: {
+            "medico_info.especialidades": "gastroenterologia",
+            $or: [
+                { "quarto_numero": 103 },
+                { "quarto_numero": 104 }
+            ]
+        }
+    },
+    {
+        $project: {
+            "_id": 0,
+            "nome_paciente": "$paciente_info.nome",
+            "nome_medico": "$medico_info.nome",
+            "data_internacao": "$data_entrada",
+            "procedimentos": "$procedimentos"
+        }
+    }
+])
 ```
 
 9- Os nomes dos médicos, seus CRMs e a quantidade de consultas que cada um realizou.
 
 R:
 ```js
+db.consultas.aggregate([
+    {$group:
+        { _id: "$medico.nome",
+          crm_medico: { $first: "$medico.crm" },
+          total_consultas: { $sum: 1 }
+        }
+    },
+    {$project:
+        {
+          _id: 0,
+          nome: "$_id",
+          crm: "$crm_medico",
+          numero_consultas: "$total_consultas"
+        }
+    }]);
 ```
 
 10-Todos os médicos que tenham "Gabriel" no nome. 
 
-R:
+R: Não tem :(
 ```js
+db.medicos.find({nome: { $regex: "Gabriel"}});
 ```
 
 11-Os nomes, CORENs e número de internações de enfermeiros que participaram de mais de uma internação.
 
 R:
 ```js
+db.internacoes.aggregate([
+    {$unwind: "$enfermeiros"},
+    {$group:
+         {_id: "$enfermeiros.coren",
+         nome_enfermeiro: { $first: "$enfermeiros.nome" },
+         total_internacoes: { $sum: 1 }
+         }
+    },
+    {$match: {total_internacoes: { $gt: 1 }}},
+    {$project:
+         {_id: 0, nome: "$nome_enfermeiro",
+         coren: "$_id",numero_internacoes: "$total_internacoes"
+         }
+    }]);
 ```
