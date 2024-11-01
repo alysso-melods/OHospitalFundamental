@@ -1070,6 +1070,43 @@ db.internacoes.aggregate([
 
 R:
 ```js
+db.consultas.aggregate([
+    {
+        $lookup: {
+            from: "pacientes",
+            localField: "paciente_id",
+            foreignField: "_id",
+            as: "paciente_info"
+        }
+    },
+    { $unwind: "$paciente_info" },
+    {
+        $addFields: {
+            idade_paciente: {
+        $dateDiff: {
+            startDate: "$paciente_info.data_nascimento",
+            endDate: "$data_consulta",
+            unit: "year"
+                }
+            }
+        }
+    },
+    {
+        $match: {
+            idade_paciente: { $lt: 18 },
+            especialidade: { $ne: "pediatria" }
+        }
+    },
+    {
+        $project: {
+            nome_paciente: "$paciente_info.nome",
+            data_nascimento: "$paciente_info.data_nascimento",
+            data_consulta: "$data_consulta",
+            especialidade: "$especialidade"
+        }
+    },
+      {$sort: {data_consulta: 1}}
+]);
 ```
 
 8- Nome do paciente, nome do médico, data da internação e procedimentos das internações realizadas por médicos da especialidade “gastroenterologia”, que tenham acontecido em “enfermaria”.
