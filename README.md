@@ -1113,6 +1113,44 @@ db.consultas.aggregate([
 
 R:
 ```js
+db.internacoes.aggregate([
+    {
+        $lookup: {
+            from: "pacientes",
+            localField: "paciente_id",
+            foreignField: "_id",
+            as: "paciente_info"
+        }
+    },
+    {
+        $lookup: {
+            from: "medicos",
+            localField: "medico_id",
+            foreignField: "_id",
+            as: "medico_info"
+        }
+    },
+    {
+        $unwind: "$paciente_info"
+    },
+    {
+        $unwind: "$medico_info"
+    },
+    {
+        $match: {
+            "medico_info.especialidades": "gastroenterologia",
+            "local": "enfermaria"
+        }
+    },
+    {
+        $project: {
+            nome_paciente: "$paciente_info.nome",
+            nome_medico: "$medico_info.nome",
+            data_internacao: "$data_internacao",
+            procedimentos: "$procedimentos"
+        }
+    }
+]);
 ```
 
 9- Os nomes dos médicos, seus CRMs e a quantidade de consultas que cada um realizou.
