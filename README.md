@@ -861,53 +861,39 @@ db.enfermeiros.insertMany([
 ]);
 ```
 ```js
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a5259") }, 
-  {$set:
-      {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1370"), ObjectId("66e98acfa294ca7f32df1375")]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1370"), ObjectId("66e98acfa294ca7f32df1375")] } }
 );
 
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a525a") }, 
-  {$set:
-     {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1376"), ObjectId("66e98acfa294ca7f32df1371") ]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1376"), ObjectId("66e98acfa294ca7f32df1371") ] } }
 );
 
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a525b") }, 
-  {$set:
-     {enfermeirosResponsaveis: [ ObjectId("66e98acfa294ca7f32df1373"),ObjectId("66e98acfa294ca7f32df136e") ]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1373"), ObjectId("66e98acfa294ca7f32df136e") ] } }
 );
 
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a525c") }, 
-  {$set:
-    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df136f"), ObjectId("66e98acfa294ca7f32df1372")]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df136f"), ObjectId("66e98acfa294ca7f32df1372")] } }
 );
 
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a525d") }, 
-  {$set:
-    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1379"), ObjectId("66e98acfa294ca7f32df1378")]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1379"), ObjectId("66e98acfa294ca7f32df1378")] } }
 );
 
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a525e") }, 
-  {$set:
-    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1374"), ObjectId("66e98acfa294ca7f32df1373")]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1374"), ObjectId("66e98acfa294ca7f32df1373")] } }
 );
 
-db.internacoes.updateMany(
+db.internacoes.updateOne(
   { _id: ObjectId("671714589b88976e823a525f") }, 
-  {$set:
-    {enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1375"), ObjectId("66e98acfa294ca7f32df136e")]}
-  }
+  { $set: { enfermeirosResponsaveis: [ObjectId("66e98acfa294ca7f32df1375"), ObjectId("66e98acfa294ca7f32df136e")] } }
 );
 ```
 # PARTE 4
