@@ -1057,41 +1057,40 @@ db.internacoes.aggregate([
 R:
 ```js
 db.consultas.aggregate([
-    {
-        $lookup: {
+    {$lookup:
+        {
             from: "pacientes",
             localField: "paciente_id",
             foreignField: "_id",
             as: "paciente_info"
         }
     },
-    { $unwind: "$paciente_info" },
-    {
-        $addFields: {
-            idade_paciente: {
-        $dateDiff: {
+    {$unwind: "$paciente_info" },
+    {$addFields:
+     {
+            idade_paciente:
+    {$dateDiff: {
             startDate: "$paciente_info.data_nascimento",
             endDate: "$data_consulta",
             unit: "year"
                 }
-            }
+    }}
+    },
+    {$match:
+        {
+         idade_paciente: { $lt: 18 },
+         especialidade: { $ne: "pediatria" }
         }
     },
-    {
-        $match: {
-            idade_paciente: { $lt: 18 },
-            especialidade: { $ne: "pediatria" }
+    {$project:
+        {
+         nome_paciente: "$paciente_info.nome",
+         data_nascimento: "$paciente_info.data_nascimento",
+         data_consulta: "$data_consulta",
+         especialidade: "$especialidade"
         }
     },
-    {
-        $project: {
-            nome_paciente: "$paciente_info.nome",
-            data_nascimento: "$paciente_info.data_nascimento",
-            data_consulta: "$data_consulta",
-            especialidade: "$especialidade"
-        }
-    },
-      {$sort: {data_consulta: 1}}
+        {$sort: {data_consulta: 1}}
 ]);
 ```
 
@@ -1100,36 +1099,32 @@ db.consultas.aggregate([
 R:
 ```js
 db.internacoes.aggregate([
-    {
-        $lookup: {
+    {$lookup:
+        {
             from: "pacientes",
             localField: "paciente_id",
             foreignField: "_id",
             as: "paciente_info"
         }
     },
-    {
-        $lookup: {
+    {$lookup:
+        {
             from: "medicos",
             localField: "medico_id",
             foreignField: "_id",
             as: "medico_info"
         }
     },
-    {
-        $unwind: "$paciente_info"
-    },
-    {
-        $unwind: "$medico_info"
-    },
-    {
-        $match: {
+    {$unwind: "$paciente_info"},
+    {$unwind: "$medico_info"},
+    {$match:
+        {
             "medico_info.especialidades": "gastroenterologia",
             "local": "enfermaria"
         }
     },
-    {
-        $project: {
+    {$project:
+        {
             nome_paciente: "$paciente_info.nome",
             nome_medico: "$medico_info.nome",
             data_internacao: "$data_internacao",
